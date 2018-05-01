@@ -7,7 +7,7 @@ Description: Embeds eso-sets tooltips in wordpress.
 Version: 1.0
 Author: Woeler
 Author URI: https://www.woeler.eu
-License: MIT
+License: GPL-3
 */
 
 defined('ABSPATH') || exit;
@@ -45,6 +45,12 @@ final class EsoSets
             return 'Set id not provided';
         }
 
+        $cache = get_transient(md5('esosets_'.serialize($atts)));
+
+        if($cache) {
+            return $cache;
+        }
+
         $ch = curl_init('https://www.eso-sets.com/api/tooltip/set/' . $atts['id']);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -62,6 +68,8 @@ final class EsoSets
             $return .= 'data-toggle="tooltip" ';
         }
         $return .= 'data-html="true" title="' . $tooltip . '">' . $name . '</a>';
+
+        set_transient(md5('esosets_'.serialize($atts)) , $return, 1440 * 60);
 
         return $return;
     }
