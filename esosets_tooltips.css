@@ -36,3 +36,18 @@
     padding-bottom: 10px;
     margin-bottom: 5px;
 }
+.skill-img {
+    margin-bottom: 5px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: rgb(159, 155, 134) rgb(104, 94, 57) rgb(104, 94, 57);
+    border-image: none 100% / 1 / 0 stretch;
+    -moz-border-top-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-bottom-colors: none;
+    -moz-border-right-colors: none;
+    border-radius: 3px;
+}
+.passive-skill {
+    border-radius: 25px;
+}
