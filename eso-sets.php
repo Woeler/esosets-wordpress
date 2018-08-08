@@ -30,6 +30,7 @@ final class EsoSets
     {
         $esosets = new EsoSets();
         add_shortcode('esoset', [$esosets, 'esoset_func']);
+        add_shortcode('esoskill', [$esosets, 'esoskill_func']);
         add_action('wp_head', [$esosets, 'addStyle']);
     }
 
