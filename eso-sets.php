@@ -73,7 +73,7 @@ final class EsoSets
         } else {
             $name = $result['name'];
         }
-        $return = '<a class="eso-set" href="https://www.eso-sets.com/set/' . $atts['id'] . '" target="_blank" rel="noopener" ';
+        $return = '<a class="eso-set" href="https://www.eso-sets.com/set/' . $atts['id'] . '" target="_blank" ';
         if (isset($atts['tooltip']) && $atts['tooltip'] == 'true') {
             $return .= 'data-toggle="tooltip" ';
         }
@@ -126,7 +126,7 @@ final class EsoSets
         } else {
             $name = $result['name'];
         }
-        $return = '<a class="eso-set" href="https://www.eso-skillbook.com/skill/' . $atts['id'] . '" target="_blank" rel="noopener" ';
+        $return = '<a class="eso-set" href="https://www.eso-skillbook.com/skill/' . $atts['id'] . '" target="_blank" ';
         if (isset($atts['tooltip']) && $atts['tooltip'] == 'true') {
             $return .= 'data-toggle="tooltip" ';
         }
