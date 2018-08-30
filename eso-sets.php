@@ -4,7 +4,7 @@
 Plugin Name: Eso Sets
 Plugin URI: https://github.com/Woeler/esosets-wordpress
 Description: Embeds eso-sets tooltips in wordpress.
-Version: 1.0
+Version: 1.1
 Author: Woeler
 Author URI: https://www.woeler.eu
 License: GPL-3
@@ -31,6 +31,7 @@ final class EsoSets
         $esosets = new EsoSets();
         add_shortcode('esoset', [$esosets, 'esoset_func']);
         add_shortcode('esoskill', [$esosets, 'esoskill_func']);
+        add_shortcode('esoskillbar', [$esosets, 'esoskill_skillbar_func']);
         add_action('wp_head', [$esosets, 'addStyle']);
     }
 
@@ -73,7 +74,7 @@ final class EsoSets
         } else {
             $name = $result['name'];
         }
-        $return = '<a class="eso-set" href="https://www.eso-sets.com/set/' . $atts['id'] . '" target="_blank" ';
+        $return = '<a class="eso-set" href="https://www.eso-sets.com/set/' . $atts['id'] . '" target="_blank" rel="noopener" ';
         if (isset($atts['tooltip']) && $atts['tooltip'] == 'true') {
             $return .= 'data-toggle="tooltip" ';
         }
@@ -87,12 +88,6 @@ final class EsoSets
         return $return;
     }
 
-    /**
-     * Convert all esoskillbook shortcode elements to tooltips upon post/page save
-     *
-     * @param $atts
-     * @return string
-     */
     public function esoskill_func($atts)
     {
         if (!isset($atts['id'])) {
@@ -126,7 +121,7 @@ final class EsoSets
         } else {
             $name = $result['name'];
         }
-        $return = '<a class="eso-set" href="https://www.eso-skillbook.com/skill/' . $atts['id'] . '" target="_blank" ';
+        $return = '<a class="eso-set" href="https://www.eso-skillbook.com/skill/' . $atts['id'] . '" target="_blank" rel="noopener" ';
         if (isset($atts['tooltip']) && $atts['tooltip'] == 'true') {
             $return .= 'data-toggle="tooltip" ';
         }
@@ -137,8 +132,82 @@ final class EsoSets
             set_transient(md5('esoskills_' . serialize($atts)), $return, 3600);
 
         }
+
         return $return;
     }
+
+    public function esoskill_skillbar_func($atts)
+    {
+        $cache = get_transient(md5('esoskillsbar_' . serialize($atts)));
+
+        if ($cache) {
+            return $cache;
+        }
+
+        $data = [];
+        $data['skill_1'] = $atts['skill_1'];
+        $data['skill_2'] = $atts['skill_2'];
+        $data['skill_3'] = $atts['skill_3'];
+        $data['skill_4'] = $atts['skill_4'];
+        $data['skill_5'] = $atts['skill_5'];
+        $data['skill_ult'] = $atts['skill_ult'];
+
+        $ch = curl_init('https://eso-skillbook.com/api/skillbar');
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        $ex = curl_exec($ch);
+        $result = json_decode($ex, true);
+        curl_close($ch);
+
+        $tooltip_1 = str_replace('"', "'", $result['skill_1']['tooltip']);
+        $tooltip_2 = str_replace('"', "'", $result['skill_2']['tooltip']);
+        $tooltip_3 = str_replace('"', "'", $result['skill_3']['tooltip']);
+        $tooltip_4 = str_replace('"', "'", $result['skill_4']['tooltip']);
+        $tooltip_5 = str_replace('"', "'", $result['skill_5']['tooltip']);
+        $tooltip_ult = str_replace('"', "'", $result['skill_ult']['tooltip']);
+
+        $return = '<div align="center" style="margin-bottom:20px;">';
+        $return .= '<a class="eso-set" href="https://www.eso-skillbook.com/skill/' . $atts['skill_1'] . '" target="_blank" ';
+        if (isset($atts['tooltip']) && $atts['tooltip'] == 'true') {
+            $return .= 'data-toggle="tooltip" ';
+        }
+        $return .= 'data-html="true" title="' . $tooltip_1 . '"><img class="skill-img" width="50px" src="' . $result['skill_1']['img'] . '" /></a> ';
+        $return .= '<a class="eso-set" href="https://www.eso-skillbook.com/skill/' . $atts['skill_2'] . '" target="_blank" ';
+        if (isset($atts['tooltip']) && $atts['tooltip'] == 'true') {
+            $return .= 'data-toggle="tooltip" ';
+        }
+        $return .= 'data-html="true" title="' . $tooltip_2 . '"><img class="skill-img" width="50px" src="' . $result['skill_2']['img'] . '" /></a> ';
+        $return .= '<a class="eso-set" href="https://www.eso-skillbook.com/skill/' . $atts['skill_3'] . '" target="_blank" ';
+        if (isset($atts['tooltip']) && $atts['tooltip'] == 'true') {
+            $return .= 'data-toggle="tooltip" ';
+        }
+        $return .= 'data-html="true" title="' . $tooltip_3 . '"><img class="skill-img" width="50px" src="' . $result['skill_3']['img'] . '" /></a> ';
+        $return .= '<a class="eso-set" href="https://www.eso-skillbook.com/skill/' . $atts['skill_4'] . '" target="_blank" ';
+        if (isset($atts['tooltip']) && $atts['tooltip'] == 'true') {
+            $return .= 'data-toggle="tooltip" ';
+        }
+        $return .= 'data-html="true" title="' . $tooltip_4 . '"><img class="skill-img" width="50px" src="' . $result['skill_4']['img'] . '" /></a> ';
+        $return .= '<a class="eso-set" href="https://www.eso-skillbook.com/skill/' . $atts['skill_5'] . '" target="_blank" ';
+        if (isset($atts['tooltip']) && $atts['tooltip'] == 'true') {
+            $return .= 'data-toggle="tooltip" ';
+        }
+        $return .= 'data-html="true" title="' . $tooltip_5 . '"><img class="skill-img" width="50px" src="' . $result['skill_5']['img'] . '" /></a> ';
+        $return .= '<a class="eso-set" href="https://www.eso-skillbook.com/skill/' . $atts['skill_ult'] . '" target="_blank" ';
+        if (isset($atts['tooltip']) && $atts['tooltip'] == 'true') {
+            $return .= 'data-toggle="tooltip" ';
+        }
+        $return .= 'data-html="true" title="' . $tooltip_ult . '"><img class="skill-img" style="margin-left:25px;" width="50px" src="' . $result['skill_ult']['img'] . '" /></a> ';
+        $return .= '</div>';
+
+        if (!is_preview()) {
+
+            set_transient(md5('esoskillsbar_' . serialize($atts)), $return, 3600);
+
+        }
+        return $return;
+    }
+
 
     /**
      * Add the tooltip stylesheet to the frontend of Wordpress
