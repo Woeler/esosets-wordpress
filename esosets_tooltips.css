@@ -38,8 +38,9 @@
     margin-bottom: 5px;
 }
 
-.esoset-skillbar {
+.esoskill-skillbar {
     text-align: center;
+    margin-bottom: 20px;
 }
 
 .skill-img {
