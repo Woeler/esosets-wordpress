@@ -1,3 +1,7 @@
+# Additional Notes
+This is the original Wordpress plugin with a few cosmetic changes.
+--dan-el
+
 # EsoSets Wordpress
 
 Welcome to the eso-sets plugin for Wordpress. With this plugin you can show tooltips in Wordpress with gear set information about the Elder Scrolls Online. All data is directly pulled from https://eso-sets.com and https://eso-skillbook.com
