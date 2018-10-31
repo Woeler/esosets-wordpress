@@ -1,5 +1,6 @@
 # Additional Notes
 This is the original Wordpress plugin with a few cosmetic changes.
+
 --dan-el
 
 # EsoSets Wordpress
