@@ -60,3 +60,7 @@
 .passive-skill {
     border-radius: 35px;
 }
+
+.tooltip {
+  pointer-events: none;
+}
