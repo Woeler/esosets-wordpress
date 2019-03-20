@@ -53,7 +53,8 @@ final class EsoSets
             return $cache;
         }
 
-        $result = $this->runCurl('https://beast.pathfindermediagroup.com/api/eso/sets/tooltip/' . $atts['id']);
+        $result = wp_remote_get('https://beast.pathfindermediagroup.com/api/eso/sets/tooltip/' . $atts['id']);
+        $result = json_decode(wp_remote_retrieve_body($result), true);
 
         if (!isset($result['name']) || !isset($result['tooltip'])) {
             if (isset($atts['setname'])) {
@@ -82,6 +83,12 @@ final class EsoSets
         return $return;
     }
 
+    /**
+     * Convert all esoskill shortcode elements to tooltips upon post/page save
+     *
+     * @param $atts
+     * @return string
+     */
     public function esoskill_func($atts)
     {
         if (!isset($atts['id'])) {
@@ -94,7 +101,8 @@ final class EsoSets
             return $cache;
         }
 
-        $result = $this->runCurl('https://beast.pathfindermediagroup.com/api/eso/skills/tooltip/' . $atts['id']);
+        $result = wp_remote_get('https://beast.pathfindermediagroup.com/api/eso/skills/tooltip/' . $atts['id']);
+        $result = json_decode(wp_remote_retrieve_body($result), true);
 
         if (!isset($result['name']) || !isset($result['tooltip'])) {
             if (isset($atts['setname'])) {
@@ -123,6 +131,12 @@ final class EsoSets
         return $return;
     }
 
+    /**
+     * Convert all esoskillbar shortcode elements to tooltips upon post/page save
+     *
+     * @param $atts
+     * @return string
+     */
     public function esoskill_skillbar_func($atts)
     {
         $cache = get_transient(md5('esoskillsbar_' . serialize($atts)));
@@ -139,7 +153,8 @@ final class EsoSets
         $data['skill_5'] = $atts['skill_5'];
         $data['skill_ult'] = $atts['skill_ult'];
 
-        $result = $this->runCurl('https://beast.pathfindermediagroup.com/api/eso/skills/skillbar');
+        $result = wp_remote_get('https://beast.pathfindermediagroup.com/api/eso/skills/skillbar?' . http_build_query($data));
+        $result = json_decode(wp_remote_retrieve_body($result), true);
 
         $tooltip_1 = str_replace('"', "'", $result['skill_1']['tooltip']);
         $tooltip_2 = str_replace('"', "'", $result['skill_2']['tooltip']);
@@ -187,24 +202,6 @@ final class EsoSets
 
         return $return;
     }
-
-    protected function runCurl($url, $data = [])
-    {
-        if (!empty($data)) {
-            $query = '?' . http_build_query($data);
-        } else {
-            $query = '';
-        }
-        $ch = curl_init($url . $query);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $ex = curl_exec($ch);
-        $result = json_decode($ex, true);
-        curl_close($ch);
-
-        return $result;
-    }
-
 
     /**
      * Add the tooltip stylesheet to the frontend of Wordpress
