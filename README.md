@@ -11,6 +11,8 @@ Note that some Wordpress themes may need some help recognizing this is a tooltip
 
 ```[esoset id="1" tooltip="true"]```
 
+You can find all the set ids [here](https://eso-sets.com/sets/byid).
+
 ## Skills
 In order to use this plugin you must use shortcodes in your Wordpress posts and pages. You need the set id of a specific skill. Lets say you want to include the Dragonknight Standard skill, which has id 8. You would use the following shortcode.
 
@@ -20,6 +22,7 @@ Note that some Wordpress themes may need some help recognizing this is a tooltip
 
 ```[esoskill id="8" tooltip="true"]```
 
+You can find all the skill ids [here](https://eso-skillbook.com/skills/byid).
 
 ## Skill bars
 In order to use this plugin you must use shortcodes in your Wordpress posts and pages. You need the skill id of all the skills on the bar. Lets say you want to include the Dragonknight Standard skill and fill a skillbar with it, which has id 8. You would use the following shortcode.
