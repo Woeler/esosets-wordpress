@@ -32,7 +32,7 @@ final class EsoSets
         add_shortcode('esoset', [$esosets, 'esoset_func']);
         add_shortcode('esoskill', [$esosets, 'esoskill_func']);
         add_shortcode('esoskillbar', [$esosets, 'esoskill_skillbar_func']);
-        add_action('wp_head', [$esosets, 'addStyle']);
+        add_action('wp_enqueue_scripts', [$esosets, 'addStyle']);
     }
 
     /**
@@ -210,6 +210,6 @@ final class EsoSets
     {
         $plugin_url = plugin_dir_url( __FILE__ );
 
-        wp_enqueue_style( 'ESO-Sets-Skills-CSS', $plugin_url.'/esosets_tooltips.css');
+        wp_enqueue_style('ESO-Sets-Skills-CSS', $plugin_url.'/esosets_tooltips.css');
     }
 }
