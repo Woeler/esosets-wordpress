@@ -50,6 +50,11 @@ Note that some WordPress themes may need some help recognizing this is a tooltip
 
 Please do not access the eso-sets api with a modified version of this plugin. Accessing the API with a modified version of this plugin may result in the permanent suspension of your domain from the eso-sets api.
 
+## 3rd party api
+This plugin uses the Pathfinder Beast api to retrieve data about ESO sets and skills. You can find the full documentation of this api [here](https://docs.pathfindermediagroup.com).
+
+This api is only used to retrieve set and skill data. No data from your Wordpress instance will be sent or stored on the external api. You can find the privacy policy [here](https://eso-sets.com/doc/privacypolicy.pdf).
+
 == Installation ==
 
 1. Install the plugin via the zip file.

@@ -208,8 +208,8 @@ final class EsoSets
      */
     public function addStyle()
     {
-        echo '<style>';
-        include plugin_dir_path(__FILE__) . 'esosets_tooltips.css';
-        echo '</style>';
+        $plugin_url = plugin_dir_url( __FILE__ );
+
+        wp_enqueue_style( 'ESO-Sets-Skills-CSS', $plugin_url.'/esosets_tooltips.css');
     }
 }
