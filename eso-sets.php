@@ -197,7 +197,9 @@ final class EsoSets
         $return .= '</div>';
 
         if (!is_preview()) {
-            set_transient(md5('esoskillsbar_' . serialize($atts)), $return, 3600);
+            if (!empty($result['skill_ult']['img']) && !empty($result['skill_1']['img']) && !empty($result['skill_2']['img']) && !empty($result['skill_3']['img']) && !empty($result['skill_4']['img']) && !empty($result['skill_5']['img'])) {
+                set_transient(md5('esoskillsbar_' . serialize($atts)), $return, 3600);
+            }
         }
 
         return $return;
@@ -208,8 +210,8 @@ final class EsoSets
      */
     public function addStyle()
     {
-        $plugin_url = plugin_dir_url( __FILE__ );
+        $plugin_url = plugin_dir_url(__FILE__);
 
-        wp_enqueue_style('ESO-Sets-Skills-CSS', $plugin_url.'/esosets_tooltips.css');
+        wp_enqueue_style('ESO-Sets-Skills-CSS', $plugin_url . '/esosets_tooltips.css');
     }
 }
