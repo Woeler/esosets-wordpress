@@ -4,7 +4,7 @@
 Plugin Name: ESO Sets and Skills
 Plugin URI: https://github.com/Woeler/esosets-wordpress
 Description: Embed tooltips for sets and skills related to the Elder Scrolls Online into your pages and posts.
-Version: 1.2
+Version: 1.3
 Author: Woeler
 Author URI: https://www.github.com/woeler
 License: GPL-3
@@ -32,6 +32,7 @@ final class EsoSets
         add_shortcode('esoset', [$esosets, 'esoset_func']);
         add_shortcode('esoskill', [$esosets, 'esoskill_func']);
         add_shortcode('esoskillbar', [$esosets, 'esoskill_skillbar_func']);
+        add_shortcode('esoskilllist', [$esosets, 'esoskill_skilllist_func']);
         add_action('wp_enqueue_scripts', [$esosets, 'addStyle']);
     }
 
@@ -200,6 +201,44 @@ final class EsoSets
             if (!empty($result['skill_ult']['img']) && !empty($result['skill_1']['img']) && !empty($result['skill_2']['img']) && !empty($result['skill_3']['img']) && !empty($result['skill_4']['img']) && !empty($result['skill_5']['img'])) {
                 set_transient(md5('esoskillsbar_' . serialize($atts)), $return, 3600);
             }
+        }
+
+        return $return;
+    }
+
+    public function esoskill_skilllist_func($atts)
+    {
+        $cache = get_transient(md5('esoskillslist_' . serialize($atts)));
+
+        if ($cache) {
+            return $cache;
+        }
+
+        $data = [];
+        foreach ($atts as $key => $skill_id) {
+            if (false !== strpos($key, 'skill_')) {
+                $data[$key] = $skill_id;
+            }
+        }
+
+        $result = wp_remote_get('https://beast.pathfindermediagroup.com/api/eso/skills/skilllist?' . http_build_query($data));
+        $result = json_decode(wp_remote_retrieve_body($result), true);
+
+        $return = '<div class="esoskill-skillbar">';
+
+        foreach ($result as $skill) {
+            $tooltip = $tooltip_1 = str_replace('"', "'", $skill['tooltip']);
+            $return .= '<a class="eso-set" href="https://www.eso-skillbook.com/skill/' . $skill['id'] . '" target="_blank" ';
+            if (isset($atts['tooltip']) && $atts['tooltip'] == 'true') {
+                $return .= 'data-toggle="tooltip" ';
+            }
+            $return .= 'data-html="true" title="' . htmlspecialchars($tooltip) . '"><img class="skill-img" width="50px" src="' . $skill['img'] . '" /></a> ';
+        }
+
+        $return .= '</div>';
+
+        if (!is_preview()) {
+            set_transient(md5('esoskillslist_' . serialize($atts)), $return, 3600);
         }
 
         return $return;
