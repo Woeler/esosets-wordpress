@@ -16,6 +16,8 @@ add_action('plugins_loaded', 'EsoSets::setup');
 
 final class EsoSets
 {
+    protected $skillBarItems = [1, 2, 3, 4, 5, 'ult'];
+
     /**
      * EsoSets constructor.
      */
@@ -147,60 +149,34 @@ final class EsoSets
         }
 
         $data = [];
-        $data['skill_1'] = $atts['skill_1'];
-        $data['skill_2'] = $atts['skill_2'];
-        $data['skill_3'] = $atts['skill_3'];
-        $data['skill_4'] = $atts['skill_4'];
-        $data['skill_5'] = $atts['skill_5'];
-        $data['skill_ult'] = $atts['skill_ult'];
+        foreach ($atts as $key => $skill_id) {
+            if (false !== strpos($key, 'skill_')) {
+                $data[$key] = $skill_id;
+            }
+        }
 
         $result = wp_remote_get('https://beast.pathfindermediagroup.com/api/eso/skills/skillbar?' . http_build_query($data));
         $result = json_decode(wp_remote_retrieve_body($result), true);
 
-        $tooltip_1 = str_replace('"', "'", $result['skill_1']['tooltip']);
-        $tooltip_2 = str_replace('"', "'", $result['skill_2']['tooltip']);
-        $tooltip_3 = str_replace('"', "'", $result['skill_3']['tooltip']);
-        $tooltip_4 = str_replace('"', "'", $result['skill_4']['tooltip']);
-        $tooltip_5 = str_replace('"', "'", $result['skill_5']['tooltip']);
-        $tooltip_ult = str_replace('"', "'", $result['skill_ult']['tooltip']);
-
         $return = '<div class="esoskill-skillbar">';
-        $return .= '<a class="eso-set" href="https://www.eso-skillbook.com/skill/' . $atts['skill_1'] . '" target="_blank" ';
-        if (isset($atts['tooltip']) && $atts['tooltip'] == 'true') {
-            $return .= 'data-toggle="tooltip" ';
+
+        foreach ($result as $key => $skill) {
+            $tooltip = str_replace('"', "'", $skill['tooltip']);
+            $return .= '<a class="eso-set" href="https://www.eso-skillbook.com/skill/' . $atts[$key] . '" target="_blank" ';
+            if (isset($atts['tooltip']) && $atts['tooltip'] == 'true') {
+                $return .= 'data-toggle="tooltip" ';
+            }
+            if ($key === 'skill_ult') {
+                $return .= 'data-html="true" title="' . htmlspecialchars($tooltip) . '"><img class="skill-img" style="margin-left:25px;" width="50px" src="' . $skill['img'] . '" /></a> ';
+            } else {
+                $return .= 'data-html="true" title="' . htmlspecialchars($tooltip) . '"><img class="skill-img" width="50px" src="' . $skill['img'] . '" /></a> ';
+            }
         }
-        $return .= 'data-html="true" title="' . htmlspecialchars($tooltip_1) . '"><img class="skill-img" width="50px" src="' . $result['skill_1']['img'] . '" /></a> ';
-        $return .= '<a class="eso-set" href="https://www.eso-skillbook.com/skill/' . $atts['skill_2'] . '" target="_blank" ';
-        if (isset($atts['tooltip']) && $atts['tooltip'] == 'true') {
-            $return .= 'data-toggle="tooltip" ';
-        }
-        $return .= 'data-html="true" title="' . htmlspecialchars($tooltip_2) . '"><img class="skill-img" width="50px" src="' . $result['skill_2']['img'] . '" /></a> ';
-        $return .= '<a class="eso-set" href="https://www.eso-skillbook.com/skill/' . $atts['skill_3'] . '" target="_blank" ';
-        if (isset($atts['tooltip']) && $atts['tooltip'] == 'true') {
-            $return .= 'data-toggle="tooltip" ';
-        }
-        $return .= 'data-html="true" title="' . htmlspecialchars($tooltip_3) . '"><img class="skill-img" width="50px" src="' . $result['skill_3']['img'] . '" /></a> ';
-        $return .= '<a class="eso-set" href="https://www.eso-skillbook.com/skill/' . $atts['skill_4'] . '" target="_blank" ';
-        if (isset($atts['tooltip']) && $atts['tooltip'] == 'true') {
-            $return .= 'data-toggle="tooltip" ';
-        }
-        $return .= 'data-html="true" title="' . htmlspecialchars($tooltip_4) . '"><img class="skill-img" width="50px" src="' . $result['skill_4']['img'] . '" /></a> ';
-        $return .= '<a class="eso-set" href="https://www.eso-skillbook.com/skill/' . $atts['skill_5'] . '" target="_blank" ';
-        if (isset($atts['tooltip']) && $atts['tooltip'] == 'true') {
-            $return .= 'data-toggle="tooltip" ';
-        }
-        $return .= 'data-html="true" title="' . htmlspecialchars($tooltip_5) . '"><img class="skill-img" width="50px" src="' . $result['skill_5']['img'] . '" /></a> ';
-        $return .= '<a class="eso-set" href="https://www.eso-skillbook.com/skill/' . $atts['skill_ult'] . '" target="_blank" ';
-        if (isset($atts['tooltip']) && $atts['tooltip'] == 'true') {
-            $return .= 'data-toggle="tooltip" ';
-        }
-        $return .= 'data-html="true" title="' . htmlspecialchars($tooltip_ult) . '"><img class="skill-img" style="margin-left:25px;" width="50px" src="' . $result['skill_ult']['img'] . '" /></a> ';
+
         $return .= '</div>';
 
         if (!is_preview()) {
-            if (!empty($result['skill_ult']['img']) && !empty($result['skill_1']['img']) && !empty($result['skill_2']['img']) && !empty($result['skill_3']['img']) && !empty($result['skill_4']['img']) && !empty($result['skill_5']['img'])) {
-                set_transient(md5('esoskillsbar_' . serialize($atts)), $return, 3600);
-            }
+            set_transient(md5('esoskillsbar_' . serialize($atts)), $return, 3600);
         }
 
         return $return;
