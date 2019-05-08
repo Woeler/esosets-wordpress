@@ -203,7 +203,7 @@ final class EsoSets
         $return = '<div class="esoskill-skillbar">';
 
         foreach ($result as $skill) {
-            $tooltip = $tooltip_1 = str_replace('"', "'", $skill['tooltip']);
+            $tooltip = str_replace('"', "'", $skill['tooltip']);
             $return .= '<a class="eso-set" href="https://www.eso-skillbook.com/skill/' . $skill['id'] . '" target="_blank" ';
             if (isset($atts['tooltip']) && $atts['tooltip'] == 'true') {
                 $return .= 'data-toggle="tooltip" ';
