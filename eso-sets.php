@@ -182,6 +182,12 @@ final class EsoSets
         return $return;
     }
 
+    /**
+     * Convert all esoskilllist shortcode elements to tooltips upon post/page save
+     *
+     * @param $atts
+     * @return string
+     */
     public function esoskill_skilllist_func($atts)
     {
         $cache = get_transient(md5('esoskillslist_' . serialize($atts)));
