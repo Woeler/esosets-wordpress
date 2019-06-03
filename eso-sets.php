@@ -167,9 +167,9 @@ final class EsoSets
                 $return .= 'data-toggle="tooltip" ';
             }
             if ($key === 'skill_ult') {
-                $return .= 'data-html="true" title="' . htmlspecialchars($tooltip) . '"><img class="skill-img" style="margin-left:25px;" width="50px" src="' . $skill['img'] . '" /></a> ';
+                $return .= 'data-html="true" title="' . htmlspecialchars($tooltip) . '"><img class="skill-img" style="margin-left:25px;" src="' . $skill['img'] . '" /></a> ';
             } else {
-                $return .= 'data-html="true" title="' . htmlspecialchars($tooltip) . '"><img class="skill-img" width="50px" src="' . $skill['img'] . '" /></a> ';
+                $return .= 'data-html="true" title="' . htmlspecialchars($tooltip) . '"><img class="skill-img" src="' . $skill['img'] . '" /></a> ';
             }
         }
 
@@ -218,7 +218,7 @@ final class EsoSets
             if ($skill['type'] === 2) {
                 $return .= ' passive-skill';
             }
-            $return .= '" width="50px" src="' . $skill['img'] . '" /></a> ';
+            $return .= '" src="' . $skill['img'] . '" /></a> ';
         }
 
         $return .= '</div>';
