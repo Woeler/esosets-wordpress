@@ -4,7 +4,7 @@
 Plugin Name: ESO Sets and Skills
 Plugin URI: https://github.com/Woeler/esosets-wordpress
 Description: Embed tooltips for sets and skills related to the Elder Scrolls Online into your pages and posts.
-Version: 1.3.1
+Version: 1.3.2
 Author: Woeler
 Author URI: https://www.github.com/woeler
 License: GPL-3
