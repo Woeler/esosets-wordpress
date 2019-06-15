@@ -73,7 +73,7 @@ final class EsoSets
         } else {
             $name = $result['name'];
         }
-        $return = '<a class="eso-set" href="https://www.eso-sets.com/set/' . $atts['id'] . '" target="_blank" rel="noopener" ';
+        $return = '<a class="eso-set" href="https://www.eso-sets.com/set/' . $result['slug'] . '" target="_blank" rel="noopener" ';
         if (isset($atts['tooltip']) && $atts['tooltip'] == 'true') {
             $return .= 'data-toggle="tooltip" ';
         }
@@ -121,7 +121,7 @@ final class EsoSets
         } else {
             $name = $result['name'];
         }
-        $return = '<a class="eso-set" href="https://www.eso-skillbook.com/skill/' . $atts['id'] . '" target="_blank" rel="noopener" ';
+        $return = '<a class="eso-set" href="https://www.eso-skillbook.com/skill/' . $result['slug'] . '" target="_blank" rel="noopener" ';
         if (isset($atts['tooltip']) && $atts['tooltip'] == 'true') {
             $return .= 'data-toggle="tooltip" ';
         }
@@ -162,7 +162,7 @@ final class EsoSets
 
         foreach ($result as $key => $skill) {
             $tooltip = str_replace('"', "'", $skill['tooltip']);
-            $return .= '<a class="eso-set" href="https://www.eso-skillbook.com/skill/' . $atts[$key] . '" target="_blank" ';
+            $return .= '<a class="eso-set" href="https://www.eso-skillbook.com/skill/' . $skill['slug'] . '" target="_blank" ';
             if (isset($atts['tooltip']) && $atts['tooltip'] == 'true') {
                 $return .= 'data-toggle="tooltip" ';
             }
@@ -210,7 +210,7 @@ final class EsoSets
 
         foreach ($result as $skill) {
             $tooltip = str_replace('"', "'", $skill['tooltip']);
-            $return .= '<a class="eso-set" href="https://www.eso-skillbook.com/skill/' . $skill['id'] . '" target="_blank" ';
+            $return .= '<a class="eso-set" href="https://www.eso-skillbook.com/skill/' . $skill['slug'] . '" target="_blank" ';
             if (isset($atts['tooltip']) && $atts['tooltip'] == 'true') {
                 $return .= 'data-toggle="tooltip" ';
             }
