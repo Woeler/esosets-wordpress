@@ -3,7 +3,7 @@ Contributors: woeler
 Donate link: https://patreon.com/woeler
 Tags: Elder Scrolls Online Sets Skills Tooltip
 Requires at least: 4.9
-Tested up to: 5.1.1
+Tested up to: 5.3.2
 Requires PHP: 5.6
 Stable tag: trunk
 License: GPLv3 or later
